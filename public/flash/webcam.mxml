@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				horizontalAlign="center"
+ 				creationComplete="init()" 
+ 				height="760">
+ <mx:Script>
+  <![CDATA[
+    import mx.core.UIComponent;
+    import com.adobe.images.JPGEncoder;
+    import flash.display.Sprite;
+    import flash.text.TextField;
+    import flash.system.fscommand;
+    import flash.events.MouseEvent;
+
+    import flash.net.navigateToURL;
+    import flash.net.URLRequest;
+    import flash.net.URLVariables;
+    import mx.core.FlexGlobals;
+
+
+    private var _dispVid:Video;
+    private var _actualVid:Video;
+    private var _dispBmd:BitmapData;
+    private var _actualBmd:BitmapData;
+    private var _dispW:int;
+    private var _dispH:int;
+    private var _actualW:int;
+    private var _actualH:int;
+    private var _baseUrl:String;
+    private var _filename:String;
+    private var _snapShotTitle:String;
+    private var _upButtonLabel:String;
+    private var _resetButtonLabel:String;
+    private var _downButtonLabel:String;
+    private var _snap1ButtonLabel:String;
+    private var _snap2ButtonLabel:String;
+    private var _saveButtonLabel:String;
+    private var _visitorId:String;
+   
+    private function init():void {
+        _actualW = 1600;
+        _actualH = 1200;
+        _dispW = 640;
+        _dispH = 480;
+
+		
+        var camObj:Camera = Camera.getCamera();
+        camObj.setMode(_actualW, _actualH, 5, false);
+        camObj.setQuality(0, 100);
+        _dispVid = new Video(_dispW, _dispH);
+        _dispVid.attachCamera(camObj);
+        _actualVid = new Video(_actualW, _actualH);
+        _actualVid.attachCamera(camObj);
+
+        _dispBmd = new BitmapData(_dispW, _dispH);
+        _actualBmd = new BitmapData(_actualW, _actualH);
+    
+        var holder:UIComponent = new UIComponent();
+        holder.addChild(_dispVid);
+        cam.addChild(holder);    
+
+        _baseUrl = FlexGlobals.topLevelApplication.parameters.baseUrl;
+        //Get the title of the snapshot, up, down, reset, capture and save.         
+        _snapShotTitle = FlexGlobals.topLevelApplication.parameters.snapshottitle;
+        _upButtonLabel = FlexGlobals.topLevelApplication.parameters.upbuttonlabel;
+        _resetButtonLabel = FlexGlobals.topLevelApplication.parameters.resetbuttonlabel;
+        _downButtonLabel = FlexGlobals.topLevelApplication.parameters.downbuttonlabel;
+        _snap1ButtonLabel = FlexGlobals.topLevelApplication.parameters.snap1buttonlabel;        
+        _snap2ButtonLabel = FlexGlobals.topLevelApplication.parameters.snap2buttonlabel;
+        _saveButtonLabel = FlexGlobals.topLevelApplication.parameters.savebuttonlabel;
+        _visitorId = FlexGlobals.topLevelApplication.parameters.visitorId;
+        
+        
+        if (_snapShotTitle) 
+        	snapShot.title = _snapShotTitle;
+           		
+        if (_upButtonLabel)
+        	upButton.label = _upButtonLabel;
+           		
+        if (_resetButtonLabel)
+        	resetButton.label = _resetButtonLabel;
+           		
+        if (_downButtonLabel)
+        	downButton.label = _downButtonLabel;
+           		
+        if (_snap1ButtonLabel)
+        	snapButton.label = _snap1ButtonLabel;
+           		
+		if (_saveButtonLabel)
+           	saveButton.label = _saveButtonLabel;
+    }    
+       
+    private function snap():void {
+        var holder:UIComponent = new UIComponent();
+        if (snapButton.label == _snap1ButtonLabel) {
+            var bm:Bitmap = new Bitmap(_dispBmd);
+            holder.addChild(bm);
+            cam.removeAllChildren();
+            cam.addChild(holder);
+            _dispBmd.draw(_dispVid);
+            _actualBmd.draw(_actualVid);
+            snapButton.label = _snap2ButtonLabel;
+            saveButton.enabled = true;
+        } else if (snapButton.label == _snap2ButtonLabel) {
+            holder.addChild(_dispVid);
+            cam.removeAllChildren();
+            cam.addChild(holder);
+            snapButton.label = _snap1ButtonLabel;
+            saveButton.enabled = false;
+        }
+            status.text = '';
+    }
+
+    private function save():void {
+
+        status.text = 'Processing...';
+
+        var jpgEncoder:JPGEncoder = new JPGEncoder();
+        var ba:ByteArray = jpgEncoder.encode(_actualBmd);
+        _filename = '' + new Date().getTime();
+        var url:String = _baseUrl + '/visitors/upload/filename/' + _filename + '/visitorid/' + _visitorId;
+        var request:URLRequest = new URLRequest(url);
+        request.method = URLRequestMethod.POST;
+        request.contentType = 'application/octet-stream';
+        request.data = ba;
+        saveButton.enabled = false;
+        
+        var loader:URLLoader = new URLLoader();
+        loader.addEventListener(Event.COMPLETE, completeHandler);
+        loader.load(request);
+    }
+
+    private function completeHandler(event:Event):void {
+        status.text = 'Photo saved.';
+        snap();
+    }
+    
+    private function PtzcompleteHandler(event:Event):void {
+        //status.text = 'Ptz Done. ver:1.0.7';
+        saveButton.enabled = true;
+    }
+
+    private function cam_up():void {
+        var url:String = _baseUrl + '/visitors/ptz/act/up';
+        var request:URLRequest = new URLRequest(url);
+        var variables:URLVariables = new URLVariables();
+        var loader:URLLoader = new URLLoader();
+    
+        request.method = URLRequestMethod.POST;
+        loader.addEventListener(Event.COMPLETE, PtzcompleteHandler);
+        loader.load(request);
+    }
+
+    private function cam_reset():void {
+        var url:String = _baseUrl + '/visitors/ptz/act/reset';
+        var request:URLRequest = new URLRequest(url);
+        var variables:URLVariables = new URLVariables();
+	var loader:URLLoader = new URLLoader();
+	
+	    request.method = URLRequestMethod.POST;
+	    loader.addEventListener(Event.COMPLETE, PtzcompleteHandler);
+            loader.load(request);
+    }
+
+   private function cam_down():void {
+        var url:String = _baseUrl + '/visitors/ptz/act/down';
+        var request:URLRequest = new URLRequest(url);
+        var variables:URLVariables = new URLVariables();
+	var loader:URLLoader = new URLLoader();
+	
+	    request.method = URLRequestMethod.POST;
+	    loader.addEventListener(Event.COMPLETE, PtzcompleteHandler);
+            loader.load(request);
+    }
+
+  ]]>
+ </mx:Script>
+ <mx:Panel 	width="750" height="670" 
+ 			layout="absolute" color="#000000" 
+ 			horizontalAlign="center" verticalAlign="top" 
+ 			title="Take Photo" 
+ 			id="snapShot">
+  <mx:Panel width="640" height="480" 
+  			layout="absolute" id="cam" 
+  			x="-2" y="-32" 
+  			horizontalAlign="center" verticalAlign="top">
+  </mx:Panel>
+  <mx:Button label="Up" x="670" y="150" width="60" height="60" click="cam_up()"  id="upButton" />
+  <mx:Button label="Reset" x="670" y="230" width="60" height="60" click="cam_reset()"  id="resetButton" />
+  <mx:Button label="Down" x="670" y="310" width="60" height="60" click="cam_down()"  id="downButton" />
+  <mx:Button label="Snap"  x="200" y="510" width="60" height="60" id="snapButton" click="snap()" />
+  <mx:Button label="Save" x="450" y="510" width="60" height="60"  id="saveButton" enabled="false" click="save()" />
+  <mx:Label x="300" y="600" id="status"  fontSize="18" color="#1A1515"/>
+ </mx:Panel>
+</mx:Application>
+

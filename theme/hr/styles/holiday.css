@@ -1,0 +1,122 @@
+
+/* scrollable root element */
+.highlight {
+    background-color: #FFD384;
+}
+
+#companytitle {
+    font-size: 20px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 35px;
+    width: auto;
+}
+
+#companytable {
+    width: auto;
+    margin: 0 auto;
+    border:maroon 1px solid;
+}
+
+#companytable tr{
+}
+
+#companytable .holiday{
+    text-align: left;
+}
+
+#companytable th{
+    font-size: 15px;
+    height:25px;
+    line-height: 23px;
+    border: #00869F 1px solid;
+}
+
+#companytable td{
+    border: #66ccff 1px solid;
+    height: 25px;
+    line-height: 13px;    
+}
+
+.header {
+    background-color: #FFA800;
+    height: 30px;
+}
+
+.Saturday {
+    color: red;
+}
+
+.Sunday {
+    color: red;
+}
+
+.Monday {
+    color: black;
+}
+
+.Tuesday {
+    color: black;
+}
+
+.Wednesday {
+    color: black;
+}
+
+.Thursday {
+    color: black;
+}
+
+.Friday {
+    color: black;
+}
+
+.date {
+    
+}
+
+.dateover {
+    background-color:silver;
+    color: black;
+}
+
+#personalholiday {
+    padding-top: 30px;
+    width: auto;
+    margin:0 auto;
+}
+
+#personaltitle {
+    font-size: 20px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 35px;
+    width: auto;
+}
+
+#personaltable {
+    border:1px solid maroon;
+    margin:0 auto;
+    width: auto;
+}
+
+#personaltable tr{
+}
+
+#personaltable .hoday{
+    text-align: left;
+}
+
+#personaltable th{
+    font-size: 15px;
+    height:25px;
+    line-height: 23px;
+    border: #66ccff 1px solid;
+}
+
+#personaltable td{
+    border: #66ccff 1px solid;
+    height: 25px;
+    line-height: 13px;
+}
+

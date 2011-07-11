@@ -1,0 +1,64 @@
+<div id="company">
+    <div id="companyholiday">
+        <div id="companytitle">公司假期表</div>
+        <table id="companytable">
+            <tr class="header">
+                <th id="date">日　期</th><th>節　日</th><th>Festival</th><th>Festival</th><th>上/下/全日</th>
+            </tr>
+<?php
+    foreach ($this->companyHoliday AS $cHoliday) {
+        $fromTime = $cHoliday['fromTime'];
+        $toTime = $cHoliday['toTime'];
+        if (strtotime($fromTime) < strtotime('13:00:00')){
+            if (strtotime($toTime) > strtotime('14:30:00')){
+                $day = '全日';
+            }else{
+                $day = '早上';
+            }
+        }else{
+            $day = '下午';
+        }
+?>
+            <tr class="<?php if (strtotime($cHoliday["id"]) < strtotime(date('Y/m/d')))
+                                 echo "dateover ";
+                             echo date('l', strtotime($cHoliday["id"])); ?>">
+                <td class="holiday">&nbsp;<?php echo date('Y/m/d (D)', strtotime($cHoliday["id"])); ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $cHoliday["descC"]; ?>&nbsp;</td>
+                <td><?php echo $cHoliday["descE"]; ?></td>
+                <td><?php echo $cHoliday["descP"]; ?></td>
+                <td>&nbsp;<?php echo $day; ?>&nbsp;</td>
+            </tr>
+<?php 
+    }
+?>
+        </table>
+    </div>
+<?php //print_r($this->userHoliday); ?>
+    <div id="personalholiday">
+        <div id="personaltitle">假期申請狀況一覽表</div>
+        <table id="personaltable">
+            <tr class="header">
+                <th>&nbsp;申請類別&nbsp;</th><th>&nbsp;年　度&nbsp;</th>
+                <th>&nbsp;已使用日數&nbsp</th><th>&nbsp;上年度餘下日數&nbsp;</th>
+                <th>&nbsp;本年度可用日數&nbsp;</th><th>&nbsp;可撥下一年度日數&nbsp;</th>
+                <th>&nbsp;可借下一年度日數&nbsp;</th>
+            </tr>
+<?php
+    foreach ($this->userHoliday['holidayType'] AS $holidayType) {
+        $hType = $holidayType['id'];
+?>
+            <tr>
+                <td>&nbsp;<?php echo $holidayType['descC']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['holidayYear']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['onLTook'][$hType]['OnLeaveDays']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['onLQuotaLastYear'][$hType]['day']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['onLQuota'][$hType]['day']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['onLQuota'][$hType]['carryday']; ?>&nbsp;</td>
+                <td>&nbsp;<?php echo $this->userHoliday['onLQuota'][$hType]['borrowday']; ?>&nbsp;</td>
+            </tr>
+<?php
+    }
+?>            
+        </table>
+    </div>
+</div>

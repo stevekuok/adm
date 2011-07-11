@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>
+            <?php echo $this->escape($this->title); ?>
+        </title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
+    </head>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.tablesorter.mod.js"></script>    
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/public/js/php.js.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl; ?>/theme/hr/styles/main.css"/>
+
+    <body background="<?php echo $this->baseUrl; ?>/theme/hr/images/main.jpg" width="1200">
+        <div id="Left">
+        <div id="Logo">
+            <span clas="logo">
+                <img <?php if ($this->userLogo['onclick'] <> "") echo "onclick=\"".$this->userLogo['onclick']."\""; ?> alt="" src ="<?php echo $this->userLogo['src']; ?>"></img>
+            </span>
+        </div>
+        <div class="prevPage"></div>
+        <div class="scrollable vertical">
+            <ul class="menuitems" id="menu">
+        <?php $fn = $this->userFunc['fn']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-toggle" class="menu-toggle"></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                            <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+
+        <?php $fn = $this->userFunc['rpt']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-taggle" class="menu-toggle"><br /></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                        <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+
+        <?php $fn = $this->userFunc['app']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-taggle" class="menu-toggle"><br /></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                            <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+
+        <?php $fn = $this->userFunc['gpg']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-taggle" class="menu-toggle"><br /></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                            <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+
+        <?php $fn = $this->userFunc['wifi']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-taggle" class="menu-toggle"><br /></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                            <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+
+        <?php $fn = $this->userFunc['sys']; ?>
+                <li id="<?php echo $fn['id']; ?>" class="submenu">
+                    <div id="<?php echo $fn['id']; ?>-taggle" class="menu-toggle"></div>
+                    <a><?php echo $fn['li']; ?></a>
+                    <div id="sub <?php echo $fn['id']; ?>" class="subItem">
+                        <ul>
+            <?php foreach ($fn[0] as $subfn) { ?>
+                            <li id="<?php echo $subfn['id']; ?>" onclick="<?php echo $subfn['onclick']; ?>"><?php echo $subfn['li']; ?></li>
+            <?php } ?>
+                        </ul>
+                    </div>
+            </ul>
+        </div>
+        <div class="nextPage"></div>
+        </div>
+        <div id="Right">
+        <div id="Title">
+            <?php 
+                print_r($this->userTitle);
+            ?>
+        </div>
+        
+
+
+

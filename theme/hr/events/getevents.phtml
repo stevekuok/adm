@@ -1,0 +1,263 @@
+        <div id="eventsclose"></div>
+        <table id="appdetailstable">
+
+<?php
+    switch ($this->eventsMessage['eventType']) {
+        case "absence":
+?>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['userIdKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['userId']?></td>
+                    <td class="label"><?php echo $this->eventsMessage['deptKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['dept']?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['formDateKeyName']?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['formDate'])) ." (".date('D',strtotime($this->eventsMessage['formDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appTypeKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appType']?></td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appFromTimeKeyName'];?>：</td>
+                    <td class="eventsdata"><?php echo $this->eventsMessage['appFromTime'] . " 至 " . $this->eventsMessage['appToTime']; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['recordFromTimeKeyName'];?>：</td>
+                    <td class="eventsdata"><?php echo $this->eventsMessage['recordFromTime']; if ($this->eventsMessage['recordToTime'] <> '') echo " 至 " . $this->eventsMessage['recordToTime']; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appReasonKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appReason'];?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appStatusKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appStatus'];?></td>
+		</tr>
+                <?php
+    if ($this->eventsMessage['comment1'] <> "") {
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment1KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment1'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment2'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment2KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment2'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment3'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment3KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment3'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment4'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment4KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment4'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment5'] <> ""){
+
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment5KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment5'];?></td></tr>
+<?php
+    }
+?>
+
+<?php
+            break;
+
+        case "late":
+?>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['userIdKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['userId']?></td>
+                    <td class="label"><?php echo $this->eventsMessage['deptKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['dept']?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['formDateKeyName']?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['formDate']))." (".date('D',strtotime($this->eventsMessage['formDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appTypeKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appType']?></td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appDateKeyName']; ?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appDate']))." (".date('D',strtotime($this->eventsMessage['appDate'])).")"; ?></td>
+                    <td class="label"><?php if ($this->eventsMessage['arrivedTime'] <> "") echo $this->eventsMessage['arrivedTimeKeyName']."："; ?></td><td class="eventsdata"><?php echo $this->eventsMessage['arrivedTime']; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appReasonKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appReason'];?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appStatusKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appStatus'];?></td>
+		</tr>
+<?php
+    if ($this->eventsMessage['comment1'] <> "") {
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment1KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment1'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment2'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment2KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment2'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment3'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment3KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment3'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment4'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment4KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment4'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment5'] <> ""){
+
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment5KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment5'];?></td></tr>
+<?php
+    }
+?>
+<?php
+            break;
+
+        case "modulation":
+?>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['userIdKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['userId']?></td>
+                    <td class="label"><?php echo $this->eventsMessage['deptKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['dept']?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['formDateKeyName']?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['formDate']))." (".date('D',strtotime($this->eventsMessage['formDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appTypeKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appType']?></td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appFromDateKeyName']; if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo "由";?>：</td><td class="eventsdata"  colspan="3"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appFromDate']))." (".date('D',strtotime($this->eventsMessage['appFromDate'])).")"; ?>
+                    <?php if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo " 至 "; if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appToDate']))." (".date('D',strtotime($this->eventsMessage['appToDate'])).")"; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['morningInKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['morningIn']."~".$this->eventsMessage['morningOut']; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['noonInKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['noonIn']."~".$this->eventsMessage['noonOut']; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['weekdaysKeyName']; ?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['weekdays']; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appReasonKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appReason'];?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appStatusKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appStatus'];?></td>
+		</tr>
+<?php
+    if ($this->eventsMessage['comment1'] <> "") {
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment1KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment1'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment2'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment2KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment2'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment3'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment3KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment3'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment4'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment4KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment4'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment5'] <> ""){
+
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment5KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment5'];?></td></tr>
+<?php
+    }
+?>
+<?php
+            break;
+
+        case "onleave":
+?>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['userIdKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['userId']?></td>
+                    <td class="label"><?php echo $this->eventsMessage['deptKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['dept']?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['formDateKeyName']?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['formDate']))." (".date('D',strtotime($this->eventsMessage['formDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appTypeKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appType']?></td>
+                </tr>
+                    <td class="label"><?php echo $this->eventsMessage['appFromDateKeyName']; if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo "由";?>：</td><td class="eventsdata"  colspan="3"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appFromDate']))." (".date('D',strtotime($this->eventsMessage['appFromDate'])).")".$this->eventsMessage['appFromDay']; ?>
+                    <?php if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo " 至 "; if ($this->eventsMessage['appFromDate']<>$this->eventsMessage['appToDate']) echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appToDate']))." (".date('D',strtotime($this->eventsMessage['appToDate'])).")".$this->eventsMessage['appToDay'] ?></td>
+                <tr>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appReasonKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appReason'];?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appStatusKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appStatus'];?></td>
+		</tr>
+<?php
+    if ($this->eventsMessage['comment1'] <> "") {
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment1KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment1'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment2'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment2KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment2'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment3'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment3KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment3'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment4'] <> ""){
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment4KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment4'];?></td></tr>
+<?php
+    }
+    if ($this->eventsMessage['comment5'] <> ""){
+
+?>
+                <tr><td class="label"><?php echo $this->eventsMessage['comment5KeyName']?>：</td><td class="eventsdata" colspan="3"><?php echo $this->eventsMessage['comment5'];?></td></tr>
+<?php
+    }
+?>
+<?php
+            break;
+
+        case "overtime":
+?>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['userIdKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['userId']?></td>
+                    <td class="label"><?php echo $this->eventsMessage['deptKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['dept']?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['formDateKeyName']?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['formDate']))." (".date('D',strtotime($this->eventsMessage['formDate'])).")";?></td>
+                    <td class="label"><?php if ($this->eventsMessage['approvedType'] <> "") echo $this->eventsMessage['approvedTypeKeyName']; else echo $this->eventsMessage['appTypeKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appType']?></td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appDateKeyName'];?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['appDate']))." (".date('D',strtotime($this->eventsMessage['appDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appFromTimeKeyName'];?>：</td>
+                    <td class="eventsdata"><?php echo $this->eventsMessage['appFromTime'] . "至" . $this->eventsMessage['appToTime']; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['recordDateKeyName'];?>：</td><td class="eventsdata"><?php echo date($this->eventsMessage['dspDateFormat'], strtotime($this->eventsMessage['recordDate']))." (".date('D',strtotime($this->eventsMessage['recordDate'])).")"; ?></td>
+                    <td class="label"><?php echo $this->eventsMessage['recordFromTimeKeyName'];?>：</td>
+                    <td class="eventsdata"><?php echo $this->eventsMessage['recordFromTime']; if ($this->eventsMessage['recordToTime'] <> '') echo "至" . $this->eventsMessage['recordToTime']; ?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['isVolunteerKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['isVolunteer'];?></td>
+                    <td class="label"><?php if ($this->eventsMessage['approvedSettleType'] <> "") echo $this->eventsMessage['approvedSettleTypeKeyName']; else echo $this->eventsMessage['appSettleTypeKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appSettleType'];?></td>
+		</tr>
+                <tr>
+                    <td class="label"><?php echo $this->eventsMessage['appReasonKeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appReason'];?></td>
+                    <td class="label"><?php echo $this->eventsMessage['appStatusKeyName']; ?>：</td><td class="eventsdata"><?php echo $this->eventsMessage['appStatus'];?></td>
+		</tr>
+                <tr>
+<?php
+            $iCount = 0;
+            for ($iLoop = 1; $iLoop <=5; $iLoop++) {
+                $commentName = 'comment'.$iLoop;
+                if ($this->eventsMessage[$commentName] <> "") {
+                    $iCount ++;
+?>
+                    <td class="label"><?php echo $this->eventsMessage[$commentName.'KeyName']?>：</td><td class="eventsdata"><?php echo $this->eventsMessage[$commentName];?></td>
+
+<?php
+                    if (($iCount%2) == 0) {
+                        echo "</tr>";
+                        echo "<tr>";
+                    }
+?>
+    
+<?php
+                }
+            }
+            break;
+    }
+?>
+        </table>

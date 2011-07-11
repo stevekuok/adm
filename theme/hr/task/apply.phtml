@@ -1,0 +1,121 @@
+<?php
+        if (sizeof($this->appApply['record']) > 0) {
+//print_r($this->appApply);
+?>
+            <div id="appmessage">
+                <div id="appdetails"></div>
+                <div id="approveddetails"></div>
+                <div id="appmessagetitle"><?php echo $this->appApply['2WeeksApplyStatus']?></div>
+                <div>
+                    <table id="appmessagetable" class="tablesorter header">
+                        <thead>
+                            <tr>
+                                <th id="actionheader"><input id="actionchk" class type='checkbox'></th>
+                                <th class="header" id="date"><?php echo $this->appApply['record'][0]['formDateKeyName']?></th>
+                                <th class="header" id="title" ><?php echo $this->appApply['record'][0]['titleKeyName']?></th>
+                                <th class="header" id="status"><?php echo $this->appApply['record'][0]['statusKeyName']?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        <?php
+                        foreach ($this->appApply['record'] AS $appMessage) {
+    //print_r($appMessage);
+        ?>
+                            <tr><td class='action' id="act_<?php echo $appMessage["lnkCode"]; ?>">
+                                    <input type='checkbox' class="actionchkgrp" id="chk_<?php echo $appMessage["lnkCode"]; ?>"<?php if ($appMessage["status"] == '9') echo " disabled"; ?> ></td>
+                                <td class="date"><?php echo date($this->appApply['dspDateFormat']." H:i:s ", strtotime($appMessage["formDate"]))." (".date('D',strtotime($appMessage["formDate"])).")"; ?></td>
+                                <td class="eventtitle" id="apply_<?php echo $appMessage["lnkCode"]; ?>">&nbsp;&nbsp;<a><?php echo $appMessage["title"]; ?></a>&nbsp;&nbsp;</td>
+                                <td>&nbsp;&nbsp;<?php echo $appMessage["descr"]; ?>&nbsp;&nbsp;</td>
+                            </tr>
+        <?php
+                        }
+        ?>
+                        </tbody>
+                    </table>
+<?php //print_r($this->appAction); ?>
+                    <div class="tablenav" id="applyact">
+                        <div class="alignleft actions">
+                            <select gtbfieldid="158" name="applyaction" id="applyaction">
+<?php
+foreach ($this->appAction AS $action) {
+    list($key, $value) = each($action);
+?>                                
+                                <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+<?php
+}
+?>
+                            </select>
+                            <input value="Apply" name="btnapplyaction" id="btnapplyaction" class="button-secondary action" type="submit">
+                            <br class="clear">
+                        </div>
+                        <br class="clear">
+                    </div>
+                </div>
+            </div>
+<?php
+        }
+?>
+
+    <?php
+        if (sizeof($this->taskApprove['record']) > 0) {
+    ?>
+            <div id="taskmessage">
+                <div id="taskmessagetitle"><?php echo $this->taskApprove['wait2Approved']?></div>
+                <div>
+                    <table id="taskmessagetable" class="tablesorter header">
+                        <thead>
+                            <tr class="header">
+                                <th id="actionheader"><input id="aprovedchk" class type='checkbox' disabled></th>
+                                <th class="header" id="date"><?php echo $this->taskApprove['record'][0]['formDateKeyName']?></th>
+                                <th class="header" id="title"><?php echo $this->taskApprove['record'][0]['titleKeyName']?></th>
+                                <th class="header" id="sender"><?php echo $this->taskApprove['record'][0]['senderKeyName']?></th>
+                                <th class="header" id="status"><?php echo $this->taskApprove['record'][0]['statusKeyName']?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        <?php
+                    //print_r($this->taskApprove);
+                    foreach ($this->taskApprove['record'] AS $taskApprove) {
+        //print_r($appMessage);
+        ?>
+                        <tr>
+
+                            <td id='action'><input type='checkbox' class="approvedchkgrp" id="chk__<?php echo $appMessage["lnkCode"]; ?>"<?php if ($appMessage["status"] == '9') echo " disabled"; ?> disabled></td>
+                            <td class="date"><?php echo $taskApprove["formDate"]." (".date('D',strtotime($taskApprove["formDate"])).")"; ?></td>
+                            <td class="approvedtitle" id="approved_<?php echo $taskApprove["lnkCode"]; ?>"><?php echo $taskApprove["title"]; ?></td>
+                            <td><?php echo $taskApprove["sender"]; ?></td>
+                            <td><?php echo $taskApprove["descr"]; ?></td>
+                        </tr>
+        <?php
+            }
+        ?>
+                        </tbody>
+                    </table>
+<?php
+/*
+</?php //print_r($this->approvedAction); ?/>
+                    <div class="tablenav" id="approvedact">
+                        <div class="alignleft actions">
+                            <select gtbfieldid="158" name="approvedaction" id="approvedaction">
+</?php
+foreach ($this->approvedAction AS $action) {
+    list($key, $value) = each($action);
+?/>
+                                <option value="</?php echo $key; ?/>"></?php echo $value; ?/></option>
+</?php
+}
+?/>
+                            </select>
+                            <input value="Apply" name="btnapprovedaction" id="btnapprovedaction" class="button-secondary action" type="submit">
+                            <br class="clear">
+                        </div>
+                        <br class="clear">
+                    </div>
+ *
+ */
+?>
+                </div>
+            </div>
+    <?php
+        }
+    ?>

@@ -1,0 +1,209 @@
+<?php echo $this->render('clearheader.phtml'); ?>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.tools.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl; ?>/theme/hr/styles/login.css"/>
+
+<body>
+<div id="drawer">Please fill in the empty fields marked with a <samp style="color:red">red</samp> border.</div>
+<br style="clear both;">
+<div id="login" align="center">
+    <!-- twitter style notification bar for validation errors -->
+    <p><img src="<?php echo $this->baseUrl; ?>/theme/hr/images/MSC_logo.jpg" width="160" alt="MSC Logo" /></p>
+
+    <!-- the form -->
+    <form onsubmit="ajaxGet(); return false;" method="POST">
+        <div id="wizard">
+            <div class="items">
+            <!-- page1 -->
+                <div class="page">
+                    <h2>
+                        <strong>HR System</strong>
+                    </h2>
+                    <div align="center" class="title">User login</div>
+                    <ul>
+                        <li class="required">
+                            <label>
+                                <strong> User Name : </strong>
+                                <input type="text" class="text" id="userName" name="userName"  value="<?php echo $this->login[0]['aliasName'];?>"/>
+                            </label>
+                        </li>
+
+                        <!-- password -->
+                        <li class="required double">
+                            <label>
+                                <strong> Password : </strong>
+                                <input type="password" class="text" id="userPassword" name="userPassword" />
+                            </label>
+                        </li>
+                        <li class="clearfix">
+                            <input type="submit" class="next center" value ="Login &raquo;">
+                        </li>
+                    </ul>
+                </div>
+                <!-- page2 -->
+                <div class="page">
+                    <div id="confirmMesg"></div>
+                    <p style="margin-top:30px">
+                        <button id="back" type="button" class="prev">&laquo; Back</button>
+                    </p>
+                </div>
+            </div><!--items-->
+        </div><!--wizard-->
+    </form>
+</div>
+
+
+<script>
+    var blnLoginPass;
+    
+    function getXMLHttp() {
+        var xmlHttp
+
+        try {
+    //Firefox, Opera 8.0+, Safari
+            xmlHttp = new XMLHttpRequest();
+        } catch(e) {
+    //Internet Explorer
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch(e) {
+                try {
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch(e) {
+                    alert("Your browser does not support AJAX!")
+                    return false;
+                }
+            }
+        }
+        return xmlHttp;
+    }
+    
+    function display(_dispValue) {
+        $('#confirmMesg').hide();
+        $('#back').hide();
+        blnLoginPass = false;
+
+        document.getElementById('confirmMesg').innerHTML = '';
+        switch (_dispValue) {
+            case 'Succeeded':
+                window.location = '<?php echo $this->baseUrl; ?>/hr/';
+                break;
+
+            default:
+                document.getElementById('confirmMesg').innerHTML = '<h2>Login Failed!</h2><br />' + _dispValue;
+                $('#confirmMesg').show();
+                break;
+        }
+        $('#back').show();
+    }
+
+    function ajaxGet() {
+
+        var _userName = document.getElementById('userName').value;
+        var _userPassword = document.getElementById("userPassword").value;
+        blnLoginPass = true;
+        
+        if (_userName.length != 0 & _userPassword.length != 0){
+
+            var xmlHttp = getXMLHttp();
+            var url = '<?php echo $this->baseUrl; ?>/hr/auth/auth';
+            var pars = 'userName=' + _userName + '&userPassword=' + _userPassword;
+            xmlHttp.onreadystatechange = function() {
+                if(xmlHttp.readyState == 4) {
+                    if ( xmlHttp.status == 200 ) {
+                        return display(HandleResponse(xmlHttp.responseText));
+                    } else {
+                        return display("Sending data error!");
+                    }
+                }
+            }
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader("Content-length", pars.length);
+            xmlHttp.setRequestHeader("Connection", "close");
+            xmlHttp.send(pars);
+        }
+    }
+
+    function HandleResponse(response) {   
+        return(response);
+    }
+
+    function wait(msecs) {
+        var start = new Date().getTime();
+        var cur = start
+        while(cur - start < msecs) {
+            cur = new Date().getTime();
+        }
+    }
+
+    $(function() {
+        var root = $("#wizard").scrollable({size: 1, clickable: false});
+        // some variables that we need
+        var api = root.scrollable(), drawer = $("#drawer");        
+        // validation logic is done inside the onBeforeSeek callback
+        api.onBeforeSeek(function(event, i) {
+            blnLoginPass = true;
+            var _userName = document.getElementById('userName').value;
+            var _userPassword = document.getElementById('userPassword').value;
+            // we are going 1 step backwards so no need for validation
+            drawer.slideUp();
+            if (api.getIndex() < i) {
+
+                // 1. get current page
+                var page = root.find(".page").eq(api.getIndex()),
+
+                // 2. .. and all required fields inside the page
+                inputs = page.find(".required :input").removeClass("error"),
+
+                // 3. .. which are empty
+                empty = inputs.filter(function() {
+                    return $(this).val().replace(/\s*/g, '') == '';
+                });
+                 // if there are empty fields, then
+                if (empty.length) {
+
+                    // slide down the drawer
+                    drawer.slideDown(function()  {
+
+                        // colored flash effect
+                        drawer.css("backgroundColor", "#229");
+                        setTimeout(function() { drawer.css("backgroundColor", "#fff"); }, 1000);
+                    });
+
+                    // add a CSS class name "error" for empty & required fields
+                    empty.addClass("error");
+
+                    // cancel seeking of the scrollable by returning false
+                    return false;
+
+                // everything is good
+                } else {
+                    drawer.slideUp();
+                    if (_userName.length == 0 || _userPassword.length == 0) {
+                        if (_userName.length == 0) $('#userName').addClass("text error", 100);
+                        if (_userPassword.length == 0) $('#userPassword').addClass("text error", 100);
+                        drawer.slideDown(function()  {
+                            // colored flash effect
+                            drawer.css("backgroundColor", "#229");
+                            setTimeout(function() { drawer.css("backgroundColor", "#fff"); }, 1500);
+                        });
+
+                        // add a CSS class name "error" for empty & required fields
+                        empty.addClass("error");
+
+                        // cancel seeking of the scrollable by returning false
+                        return false;
+                    }
+                    // hide the drawer
+                    // update status bar
+                    $("#status li").removeClass("active").eq(i).addClass("active");
+                }
+            }
+            wait(500);
+            return blnLoginPass;
+        });
+        
+    });
+</script>
+
+<?php echo $this->render('clearfooter.phtml'); ?>

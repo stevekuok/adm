@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<script type="text/javascript">
+var subUlList = new Array();
+var toggleFlag = 0;
+function initSecondaryNav() {
+    lists = document.getElementsByTagName('UL');
+    len = lists.length;
+    for (var i = 0; i < len; i++) {
+        node = lists[i];
+        if (node.parentNode.nodeName == 'LI') {
+            subUlList.push(node);
+        }
+    }
+}
+function toggleSecondaryNavItems(e) {
+    hideAllSecondaryNavItems();
+    elem = e.nextSibling.nextSibling;
+    elem.style.display = (elem.style.display == 'none') ? 'block' : 'none';
+    toggleFlag = 1;
+}
+
+function hideAllSecondaryNavItems() {
+    if (toggleFlag == 0) {
+        len = subUlList.length;
+        for (var i = 0; i < len; i++) {
+            subUlList[i].style.display = 'none';
+        }
+    }
+    toggleFlag = 0; 
+}
+
+document.onclick = hideAllSecondaryNavItems;
+window.onload = initSecondaryNav;
+</script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+#secondaryNav {
+    height: 40px;
+    background-color: #666666;
+}
+#secondaryNav li {
+    list-style-type: none;
+}
+#secondaryNav .topLi {
+    display: block;
+    float: left;
+}
+#secondaryNav .topLi ul {
+    position: absolute;
+    background-color: #666666;
+    padding: 5px;
+}
+#secondaryNav  a {
+    display: block;
+    line-height: 40px;
+}
+#secondaryNav .topA {
+    width: 120px;
+    text-align: center;
+}
+#secondaryNav .topLi li a {
+    display: block;
+    text-decoration: none;
+    width: 150px;
+    text-align: left;
+    background-color: #666666;
+}
+#secondaryNav a:visited {
+}
+</style>
+</head>
+<body>
+<div id="secondaryNav">
+<ul>
+<li class="topLi"><a class="topA" href="#" onclick="toggleSecondaryNavItems(this); return false;">2009 &#9662;</a>
+        <ul style="display: none;">
+            <li><a href="a.html">2009</a></li>
+            <li><a href="#">2008</a></li>
+            <li><a href="#">2007</a></li>
+            <li><a href="#">2006</a></li>
+            <li><a href="#/">2005</a></li>
+            <li><a href="#">2004</a></li>
+            <li><a href="#">2003</a></li>
+       </ul>
+</li>
+<li class="topLi"><a class="topA" href="#" onclick="toggleSecondaryNavItems(this); return false;">LATEST &#9662</a>
+        <ul style="display: none;">
+            <li><a href="#">LATEST</a></li>
+            <li><a href="#">JANUARY</a></li>
+            <li><a href="#">FEBRUARY</a></li>
+            <li><a href="#">MARCH</a></li>
+            <li><a href="#">APRIL</a></li>
+            <li><a href="#">MAY</a></li>
+            <li><a href="#">JUNE</a></li>
+            <li><a href="#">JULY</a></li>
+            <li><a href="#">AUGUST</a></li>
+            <li><a href="#">SEPTEMBER</a></li>
+            <li><a href="#">OCTOBER</a></li>
+        </ul>
+</li>
+<div style="clear: both; height: 0;"></div>
+</div>
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br />
+</body>
+</html>

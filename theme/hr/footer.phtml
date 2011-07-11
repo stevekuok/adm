@@ -1,0 +1,463 @@
+    </div>
+    <div style="clear: both; height: 0;"></div>
+    <div id="Status">
+            <?php print_r($this->userStatus); ?>
+        </div>
+
+        <script language ="javascript" type="text/javascript" >
+            var dynAll = new Array(3);
+            dynAll[0] = "holiday";
+            dynAll[1] = "wifi";
+            dynAll[2] = "jquery.highlight";
+            dynAll[3] = "task";
+            dynAll[4] = "jquery.selectboxes";
+            var wifiUpdate = false;
+            var blnReturn;
+
+            function getXMLHttp() {
+                var xmlHttp
+
+                try {
+            //Firefox, Opera 8.0+, Safari
+                    xmlHttp = new XMLHttpRequest();
+                } catch(e) {
+            //Internet Explorer
+                    try {
+                        xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+                    } catch(e) {
+                        try {
+                            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                        } catch(e) {
+                            alert("Your browser does not support AJAX!")
+                            return false;
+                        }
+                    }
+                }
+                return xmlHttp;
+            }
+
+            function display(_dispValue, fName) {
+                if (substr(_dispValue,0, 21) == '<!DOCTYPE HTML PUBLIC') {
+                    var url = '<?php echo $this->baseUrl; ?>/hr/auth/logout';
+                    window.location = url;
+                }else {
+                    blnLoginPass = false;
+
+                    switch (fName) {
+                        case 'Wifi':
+                            document.getElementById('Main').innerHTML = _dispValue;
+                            var root = $("#wizard").scrollable({size: 1, clickable: false});
+                            // some variables that we need
+                            var api = root.scrollable(), drawer = $("#drawer"), drawer2 = $("#drawer2"), drawer3 = $("#drawer3");
+
+                            // validation logic is done inside the onBeforeSeek callback
+                            api.onBeforeSeek(function(event, i) {
+                                var _password = document.getElementById("password").value;
+                                var _verifypassword = document.getElementById('verifypassword').value;
+                                // we are going 1 step backwards so no need for validation
+                                if (api.getIndex() < i) {
+
+                                    // 1. get current page
+                                    var page = root.find(".page").eq(api.getIndex()),
+                                        // 2. .. and all required fields inside the page
+                                        inputs = page.find(".required :input").removeClass("error"),
+                                        // 3. .. which are empty
+                                        empty = inputs.filter(function() {
+                                            return $(this).val().replace(/\s*/g, '') == '';
+                                        });
+                                    drawer.slideUp();
+                                    drawer2.slideUp();
+                                    drawer3.slideUp();
+
+                                    // if there are empty fields, then
+                                    if (empty.length) {
+                                        // slide down the drawer
+                                        drawer.slideDown(function() {
+                                            // colored flash effect
+                                            drawer.css("backgroundColor", "#229");
+                                            setTimeout(function() { drawer.css("backgroundColor", "#fff"); }, 1000);
+                                        });
+                                        // add a CSS class name "error" for empty & required fields
+                                        empty.addClass("error");
+                                        // cancel seeking of the scrollable by returning false
+                                        return false;
+                                    // everything is good
+                                    } else {
+                                        // hide the drawer
+                                        drawer.slideUp();
+                                        drawer2.slideUp();
+                                        drawer3.slideUp();
+                                        if (_password != _verifypassword){
+                                             $('#password').addClass("text error", 100);
+                                             $('#verifypassword').addClass("text error", 100);
+                                             drawer2.slideDown(function()  {
+                                                // colored flash effect
+                                                drawer2.css("backgroundColor", "#229");
+                                                setTimeout(function() { drawer2.css("backgroundColor", "#fff"); }, 1000);
+                                             });
+                                             empty.addClass("error");
+                                             return false;
+                                        } else if (_password.length < 7) {
+                                            // add a CSS class name "error" for empty & required fields
+                                            $('#password').addClass("text error", 100);
+                                            $('#verifypassword').addClass("text error", 100);
+                                            drawer3.slideDown(function()  {
+                                            // colored flash effect
+                                                drawer3.css("backgroundColor", "#229");
+                                                setTimeout(function() { drawer3.css("backgroundColor", "#fff"); }, 1000);
+                                             });
+                                        // add a CSS class name "error" for empty & required fields
+                                            empty.addClass("error");
+                                            return false;
+                                        }
+                                        // hide the drawer
+                                        drawer.slideUp();
+                                    }
+                                }
+                                ajaxGet_Wifi('<?php echo $this->baseUrl; ?>');
+                                // update status bar
+                                //$("#status li").removeClass("active").eq(i).addClass("active");
+                            });
+
+                            // if tab is pressed on the next button seek to next page
+                            root.find("button.next").keydown(function(e) {
+                                if (e.keyCode == 9) {
+                                    // seeks to next tab by executing our validation routine
+                                    api.next();
+                                    e.preventDefault();
+                                }
+                            });
+
+                            //document.getElementById('Left').style.height = document.getElementById('Main').offsetHeight+"px";
+                            break;
+
+                        case 'Company' :
+                            document.getElementById('Main').innerHTML = _dispValue;
+                            $('#companytable').highlight();
+                            $('#personaltable').highlight();
+                            //document.getElementById('Left').style.height = document.getElementById('Main').offsetHeight+"px";
+                            break;
+
+                        case 'Status' :
+                            document.getElementById('Status').innerHTML = _dispValue;
+                            break;
+                        
+                        case 'Task' :
+                            document.getElementById('Main').innerHTML = _dispValue;
+                            $('#appmessagetable').highlight();
+                            $('#taskmessagetable').highlight();
+                            $('#appmessagetable').tablesorter({headers:{0:{sorter: false}}, sortList:[[1,1],[2,1]], widgets: ['zebra']});
+                            $('#taskmessagetable').tablesorter({headers:{0:{sorter: false}}, sortList:[[1,1],[2,1]], widgets: ['zebra']});
+
+                            $('.eventtitle').click(function() {
+                                ajaxGet_Events('<?php echo $this->baseUrl; ?>', this.id, "getEvent");
+                            });
+
+                            $('.approvedtitle').click(function() {
+                                ajaxGet_Events('<?php echo $this->baseUrl; ?>', this.id, "getApproved");
+                            });
+
+                            $('#actionchk').click(function() {
+                                select_allchkbox();
+                                toggleaction();
+                            });
+
+                            $('#aprovedchk').click(function() {
+                                allapprovedchkbox();
+                                toggleaction();
+                            });
+
+                            $('.action').click(function() {
+                                toggleaction();
+                            });
+                            $('#btnapplyaction').click(function() {
+                                alert($("#applyaction option:selected").val());
+                                alert(getchkaction());
+                            });                            
+                            break;
+                    }
+                }
+                document.getElementById('Left').style.height = document.getElementById('Main').offsetHeight+"px";
+                document.getElementById('applyact').style.marginLeft = document.getElementById('appmessagetable').offsetLeft +"px";
+                document.getElementById('approvedact').style.marginLeft = document.getElementById('taskmessagetable').offsetLeft +"px";
+                //$('#actsec').style.marginLeft = $('#appmessagetable').offsetLeft +"px";
+            }
+
+            function toggleaction () {
+                switch (chkaction()) {
+                    case 1:
+                        $("'#applyaction'  option[value='edit']").attr("disabled", "disabled");
+                        $("'#applyaction'  option[value='cancel']").attr("disabled", "disabled");
+                        $("'#applyaction'  option[value='delete']").attr("disabled", "disabled");
+                        $("'#applyaction'  option[value='alert']").attr("selected", "selected");
+                        break;
+
+                    case 2:
+                        $("'#applyaction'  option[value='edit']").attr("disabled", "disabled");
+                        $("'#applyaction'  option[value='cancel']").attr("disabled", "");
+                        $("'#applyaction'  option[value='delete']").attr("disabled", "");
+                        $("'#applyaction'  option[value='alert']").attr("selected", "selected");
+                        break;
+
+                    case 4:
+                        $("'#applyaction'  option[value='edit']").attr("disabled", "");
+                        $("'#applyaction'  option[value='cancel']").attr("disabled", "");
+                        $("'#applyaction'  option[value='delete']").attr("disabled", "");
+                        $("'#applyaction'  option[value='alert']").attr("disabled", "");
+                        break;
+                }
+            }
+
+            function select_allchkbox(){
+                var e = $('#actionchk')[0].checked;
+                if (e) {
+                    $('#appmessagetable input:checkbox.actionchkgrp').each(function(){
+                        if (this.disabled == false)
+                            this.checked = true;
+                    });
+                } else {
+                    $('#appmessagetable input:checkbox.actionchkgrp').each(function(){
+                        this.checked = false;
+                    });
+                }          
+            }
+
+            function allapprovedchkbox(){
+                var e = $('#aprovedchk')[0].checked;
+                if (e) {
+                    $('#taskmessagetable input:checkbox.approvedchkgrp').each(function(){
+                        this.checked = true;
+                    });
+                } else {
+                    $('#taskmessagetable input:checkbox.approvedchkgrp').each(function(){
+                        this.checked = false;
+                    });
+                }
+            }
+
+            function getchkaction(){
+                var id, icount=0;
+                $('#appmessagetable input:checkbox.actionchkgrp').each(function(){
+                    if (this.checked && this.disabled == false) {
+                        icount++;
+                    }
+                });
+                var chkId = new Array(icount);
+                
+                icount = 0;
+                $('#appmessagetable input:checkbox.actionchkgrp').each(function(){
+                    if (this.checked && this.disabled == false) {
+                        id = substr(this.id, 4, this.id.lentth);
+                        chkId[icount++] = id;
+                        //icount++;
+                    }
+                });
+                return chkId;
+            }
+
+            function chkaction(){
+                var id, title, temptitle='', icount=0, toggle=0;
+                $('#appmessagetable input:checkbox.actionchkgrp').each(function(){
+                    if (this.checked && this.disabled == false) {
+                        id = "#" + substr(this.id, 4, this.id.lentth);
+                        title = $(id).html();
+                        title = substr(title, strpos(title, "<a>") + 3, 4);
+                        icount++;
+                        if (temptitle != "" && temptitle != title && icount > 0) {
+                            toggle++;
+                        } else if (title != "") {
+                            temptitle = title;
+                        }
+                    }
+                });
+                if (toggle == 0) {
+                    if (icount > 1) {
+                        return 2;
+                    } else {
+                        return 4;
+                    }
+                } else {
+                    return 1;
+                }
+            }
+
+            function ajaxGet(url, fName) {
+                document.getElementById('Main').innerHTML = "<div id='Loading'>Loading ...</div>";
+                var xmlHttp = getXMLHttp();
+                xmlHttp.onreadystatechange = function() {
+                    if(xmlHttp.readyState == 4) {
+                        if ( xmlHttp.status == 200 ) {
+                            return display(HandleResponse(xmlHttp.responseText), fName);
+                        } else {
+                            return display("Sending data error!",fName);
+                        }
+                    }
+                }
+                xmlHttp.open("GET", url, true);
+                xmlHttp.send(null);
+            }
+
+            function HandleResponse(response) {
+                return(response);
+            }
+
+            function logout(){
+                url = '<?php echo $this->baseUrl; ?>/hr/auth/logout';
+                window.location = url;
+            }
+
+            function task(){
+                url = '<?php echo $this->baseUrl; ?>/hr';
+                window.location = url;
+            }
+
+            function wifiChPasswd(){
+                var functionName = 'Wifi';
+                var url = '<?php echo $this->baseUrl; ?>/hr/wifi';
+                var urlStatus = '<?php echo $this->baseUrl; ?>/hr/wifi/status';
+                var dynJs = '<?php echo $this->baseUrl; ?>/public/js/hr/wifi.js';
+                var dynCss = '<?php echo $this->baseUrl; ?>/theme/hr/styles/wifi.css';
+
+                ajaxGet(url, functionName);
+                ajaxGet(urlStatus, 'Status');
+                removejscssfile(dynAll, 'Js');
+                removejscssfile(dynAll, 'Css');
+                dynamicLoadJs(dynJs, 'Js');
+                dynamicLoadJs(dynCss, "Css");
+            }
+
+            function companyholiday(){
+                var functionName = 'Company';
+                var url = '<?php echo $this->baseUrl; ?>/hr/holiday/company';
+                var urlStatus = '<?php echo $this->baseUrl; ?>/hr/holiday/status';
+                var dynJs = '<?php echo $this->baseUrl; ?>/public/js/hr/holiday.js';
+                var dynJsAdd = '<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.highlight.js';
+                var dynCss = '<?php echo $this->baseUrl; ?>/theme/hr/styles/holiday.css';
+
+                ajaxGet(url, functionName);
+                ajaxGet(urlStatus, 'Status');
+                removejscssfile(dynAll, 'Js');
+                removejscssfile(dynAll, 'Css');
+                dynamicLoadJs(dynJs, 'Js');
+                dynamicLoadJs(dynJsAdd, 'Js');
+                dynamicLoadJs(dynCss, "Css");
+            }
+
+            function task(){
+                var functionName = 'Task';
+                var url = '<?php echo $this->baseUrl; ?>/hr/task/apply';
+                var urlStatus = '<?php echo $this->baseUrl; ?>/hr/task/status';
+                var dynJs = '<?php echo $this->baseUrl; ?>/public/js/hr/task.js';
+                var dynJsAdd = '<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.highlight.js';
+                var dynJsAdd2 = '<?php echo $this->baseUrl; ?>/public/js/jquery_tools/jquery.selectboxes.js';
+                var dynCss = '<?php echo $this->baseUrl; ?>/theme/hr/styles/task.css';
+
+                ajaxGet(url, functionName);
+                ajaxGet(urlStatus, 'Status');
+                removejscssfile(dynAll, 'Js');
+                removejscssfile(dynAll, 'Css');
+                dynamicLoadJs(dynJs, 'Js');
+                dynamicLoadJs(dynJsAdd, 'Js');
+                dynamicLoadJs(dynJsAdd2, 'Js');
+                dynamicLoadJs(dynCss, "Css");                
+            }
+
+            function removejscssfile(dynFile, dynType) {
+                var targetelement=(dynType=="Js")? "script" : (dynType=="Css")? "link" : "none"     //determine element type to create nodelist from
+                var targetattr=(dynType=="Js")? "src" : (dynType=="Css")? "href" : "none"           //determine corresponding attribute to test for
+                var allsuspects=document.getElementsByTagName(targetelement)
+                for (var i=allsuspects.length; i>=0; i--){                                          //search backwards within nodelist for matching elements to remove
+                    for (var iFile=0; iFile<dynFile.length; iFile++){
+                        switch (dynType){
+                            case 'Js':
+                                var dynFileName = dynFileName = dynFile[iFile] + '.js';
+
+                                break;
+
+                            case 'Css':
+                                var dynFileName = dynFileName = dynFile[iFile] + '.css';
+                                break;
+
+                        }
+                        if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(dynFileName)!=-1) {
+                            allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+                            iFile = dynFile.length;
+                        }
+                    }
+                }
+            }
+
+            function dynamicLoadJs(dynFile, dynType) {
+                switch (dynType) {
+                    case 'Js':
+                        window.loadingScript = 1;
+                        var js = document.createElement('script');
+                        js.type = 'text/javascript';
+                        js.src = dynFile;
+                        //js.id = 'uploadScript';
+                        break;
+                        
+                    case 'Css':
+                        var js = document.createElement('link');
+                        js.rel =  'stylesheet';
+                        js.type = 'text/css';
+                        js.href = dynFile;
+                        //js.id = 'uploadScript';
+                        break;
+                }
+                document.getElementsByTagName('head')[0].appendChild(js);
+
+                var interval = setInterval(
+                    function() {
+                        if ((window.loadingScript == 0) || (blnReturn)){
+                            clearInterval(interval);
+                        }
+                    },
+                    100 /* poll per 0.1 second*/
+                );
+            }
+
+            $(function() {
+                // initialize scrollable
+                $(".menu-toggle").click(function() {
+                    var toggleid = '#' + substr(this.id, 0, strpos(this.id, "-"));
+                    if ($(toggleid).hasClass('active')) {
+//alert($(toggleid).hasClass('active'));
+                        $(toggleid).removeClass("active");
+                    } else {
+                        $(toggleid).addClass("active");
+                    }
+                    return false;
+                });
+
+
+                $(".submenu").click(function() {                    
+                    var id = '#' + this.id;
+//alert(id);
+                    if ($(id).hasClass('active')) {
+                        $(id).removeClass("active");
+                    } else {
+                        $(id).addClass("active");
+                    }
+                    return false;
+                });
+/*
+                $("div.scrollable").scrollable({
+                    vertical:true,
+                    size: 6
+
+                // use mousewheel plugin
+                }).mousewheel();
+*/
+                $(".prevPage").hide();
+                $(".nextPage").hide();
+                //$(".prevPage").hide();
+                task();                
+            });
+
+           
+
+           
+        </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<?php echo $this->render('header.phtml'); ?>
+<div class="message">
+<?php echo $this->text['rfid_not_detected']; ?> <br /><br />
+<a href="<?php echo $this->baseUrl; ?>/auth/login"><?php echo $this->text['try_again']; ?></a>
+</div>
+
+<?php echo $this->render('footer.phtml'); ?>
+

@@ -1,0 +1,54 @@
+<div align="center">
+<!-- twitter style notification bar for validation errors -->
+    <div id="drawer">Please fill in the empty fields marked with a <samp style="color:red">red</samp> border.</div>
+    <div id="drawer2"><samp style="color:red">Password dose not match.</samp></div>
+    <div id="drawer3"><samp style="color:red">Password must be at least 7 characters long.</samp></div>
+    <div id="wizard">
+        <ul id="status">
+            <li class="active"><strong>1.</strong>Change Wifi Password</li>
+            <li><strong>2.</strong> Confirm</li>
+        </ul>
+
+        <div class="items">
+            <!-- page1 -->
+            <div class="page">
+                <h2>
+                    <strong>Step 1: </strong> MSC Staff Wifi Account
+                </h2>
+                <ul>
+                    <!-- email -->
+                    <li class="required">
+                        <label>
+                            <strong>1.</strong> Your Wifi Login Name <br />
+                            <input type="text" class="text" id="username" name="username"  value="<?php echo str_replace('\'', '', $this->authSession['userName']); ?>"/>
+                        </label>
+                    </li>
+
+                    <!-- password -->
+                    <li class="required double">
+                        <label>
+                            <strong>2.</strong> Choose a Password <span>*</span><br />
+                            <input type="password" class="text" id="password" name="password" />
+                            <em>Must be at least 7 characters long.</em>
+                        </label>
+
+                        <label>
+                            Verify Password <span>*</span><br />
+                            <input type="password" class="text" id="verifypassword" name="verifypassword" />
+                        </label>
+                    </li>
+                    <li class="clearfix">
+                        <button class="next right">Proceed &raquo;</button>
+                    </li>
+                </ul>
+            </div>
+            <!-- page3 -->
+            <div class="page">
+                <div id="confirmMesg"></div>
+                <p style="margin-top:30px">
+                    <button id="back" type="button" class="prev">&laquo; Back</button>
+                </p>
+            </div>
+        </div> <!--wifiitems-->
+    </div><!--wizard-->
+</div>
